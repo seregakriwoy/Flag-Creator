@@ -1,8 +1,9 @@
 import sys
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QColorDialog
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QPainter, QColor
+from PyQt5.QtWidgets import QApplication, QMainWindow, QColorDialog, QMessageBox, QWidget
+from PyQt5 import QtCore, QtGui, QtWidgets, sip
 
 
 class Ui_MainWindow(object):
@@ -51,29 +52,131 @@ class Ui_MainWindow(object):
         self.ok_button.setText(_translate("MainWindow", "Принять"))
 
 
-# Наследуемся от виджета из PyQt5.QtWidgets и от класса с интерфейсом
-class MyWidget(QMainWindow, Ui_MainWindow):
+class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
-        # Вызываем метод для загрузки интерфейса из класса Ui_MainWindow,
-        # остальное без изменений
         self.setupUi(self)
         self.color_button.clicked.connect(self.run)
         self.ok_button.clicked.connect(self.run_1)
         self.col = ''
+        self.do_paint = False
+
+    def is_number(self, b):
+        try:
+            float(b)
+            return True
+        except ValueError:
+            return False
 
     def run(self):
         self.col = QColorDialog.getColor()
 
     def run_1(self):
-        if self.lineEdit.text().isnumeric():
-            if self.lineEdit.text() and self.color != '':
-                if (float(self.lineEdit.text()) >= 1) and (float(self.lineEdit.text()) <= 2):
+        if MainWindow().is_number(self.lineEdit.text()):
+            if self.lineEdit.text() and self.col != '':
+                if (float(self.lineEdit.text()) >= 1.0) and (float(self.lineEdit.text()) <= 2.0):
+                    self.znach = float(self.lineEdit.text())
+                    print(self.znach)
+                    self.form = Ui_Form(self.znach, self.col, self.do_paint)
+                    self.wid = MyWidget(self.znach, self.col, self.do_paint)
+                    self.wid.show()
+                    self.do_paint = True
                     self.hide()
+                else:
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Information)
+                    msg.setText('некоректное значение')
+                    msg.setWindowTitle('Ошибка')
+                    msg.exec_()
+            else:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Information)
+                msg.setText('не оставляйте пустые поля')
+                msg.setWindowTitle('Ошибка')
+                msg.exec_()
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setText('необходимо записать число')
+            msg.setWindowTitle('Ошибка')
+            msg.exec_()
+
+
+class Ui_Form():
+    def __init__(self, a, b, c):
+        self.c = c
+        self.a = a
+        self.b = b
+
+    def setupUi_1(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(400 * self.a, 350)
+        self.pushButton = QtWidgets.QPushButton(Form)
+        self.pushButton.setGeometry(QtCore.QRect(10, 10, 111, 31))
+        self.pushButton.setObjectName("pushButton")
+        self.pushButton_2 = QtWidgets.QPushButton(Form)
+        self.pushButton_2.setGeometry(QtCore.QRect(10, 50, 111, 31))
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.pushButton_3 = QtWidgets.QPushButton(Form)
+        self.pushButton_3.setGeometry(QtCore.QRect(10, 90, 111, 41))
+        self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_4 = QtWidgets.QPushButton(Form)
+        self.pushButton_4.setGeometry(QtCore.QRect(10, 140, 111, 31))
+        self.pushButton_4.setObjectName("pushButton_4")
+        self.pushButton_5 = QtWidgets.QPushButton(Form)
+        self.pushButton_5.setGeometry(QtCore.QRect(10, 260, 141, 51))
+        self.pushButton_5.setStyleSheet("font: 75 8pt \"MS Shell Dlg 2\";\n"
+                                        "")
+        self.pushButton_5.setObjectName("pushButton_5")
+        #sip.delete(self.label)
+        #sip.delete(self.label_2)
+        #sip.delete(self.label_3)
+        #sip.delete(self.ok_button)
+        #sip.delete(self.color_button)
+        #sip.delete(self.lineEdit)
+
+
+        self.retranslateUi_1(Form)
+        QtCore.QMetaObject.connectSlotsByName(Form)
+
+    def retranslateUi_1(self, Form):
+        _translate = QtCore.QCoreApplication.translate
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.pushButton.setText(_translate("Form", "Нарисовать полосу"))
+        self.pushButton_2.setText(_translate("Form", "Нарисовать череду\n"
+                                                     "полос"))
+        self.pushButton_3.setText(_translate("Form", "Нарисовать особую\n"
+                                                     "форму"))
+        self.pushButton_4.setText(_translate("Form", "Вставить герб"))
+        self.pushButton_5.setText(_translate("Form", "Сохранить изображение"))
+
+    def paintEvent(self, event):
+        if self.c:
+            qp = QPainter()
+            qp.begin(self)
+            self.draw_flag(qp)
+            qp.end()
+
+    def draw_flag(self, qp):
+        qp.setPen(QColor(255, 0, 0))
+        qp.setBrush(QColor(255, 0, 0))
+        qp.drawRect(130, 10, 230, 110)
+
+
+# noinspection PyTypeChecker
+class MyWidget(QWidget, Ui_Form):
+    def __init__(self, a, b, c):
+        super().__init__(a, b, c)
+        self.setupUi(self)
+
+
+def except_hook(cls, exception, traceback):
+    sys.__excepthook__(cls, exception, traceback)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = MyWidget()
+    ex = MainWindow()
     ex.show()
+    sys.excepthook = except_hook
     sys.exit(app.exec_())
