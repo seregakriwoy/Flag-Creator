@@ -68,6 +68,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         except ValueError:
             return False
 
+    def error_1(self, text):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText(text)
+        msg.setWindowTitle('Ошибка')
+        msg.exec_()
+
+
     def run(self):
         self.col = QColorDialog.getColor()
 
@@ -83,34 +91,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.do_paint = True
                     self.hide()
                 else:
-                    msg = QMessageBox()
-                    msg.setIcon(QMessageBox.Information)
-                    msg.setText('некоректное значение')
-                    msg.setWindowTitle('Ошибка')
-                    msg.exec_()
+                    MainWindow().error_1('Некоректное значение')
             else:
-                msg = QMessageBox()
-                msg.setIcon(QMessageBox.Information)
-                msg.setText('не оставляйте пустые поля')
-                msg.setWindowTitle('Ошибка')
-                msg.exec_()
+                MainWindow().error_1('Не оставляйте пустые поля')
         else:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Information)
-            msg.setText('необходимо записать число')
-            msg.setWindowTitle('Ошибка')
-            msg.exec_()
+            MainWindow().error_1('Необходимо записать число')
 
 
 class Ui_Form():
-    def __init__(self, a, b, c):
-        self.c = c
-        self.a = a
-        self.b = b
+    def __init__(self, prop, col, paint):
+        self.paint = paint
+        self.prop = prop
+        self.col = col
 
     def setupUi_1(self, Form):
         Form.setObjectName("Form")
-        Form.resize(400 * self.a, 350)
+        Form.resize(400 * self.prop, 350)
         self.pushButton = QtWidgets.QPushButton(Form)
         self.pushButton.setGeometry(QtCore.QRect(10, 10, 111, 31))
         self.pushButton.setObjectName("pushButton")
@@ -128,13 +124,6 @@ class Ui_Form():
         self.pushButton_5.setStyleSheet("font: 75 8pt \"MS Shell Dlg 2\";\n"
                                         "")
         self.pushButton_5.setObjectName("pushButton_5")
-        #sip.delete(self.label)
-        #sip.delete(self.label_2)
-        #sip.delete(self.label_3)
-        #sip.delete(self.ok_button)
-        #sip.delete(self.color_button)
-        #sip.delete(self.lineEdit)
-
 
         self.retranslateUi_1(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -151,7 +140,7 @@ class Ui_Form():
         self.pushButton_5.setText(_translate("Form", "Сохранить изображение"))
 
     def paintEvent(self, event):
-        if self.c:
+        if self.paint:
             qp = QPainter()
             qp.begin(self)
             self.draw_flag(qp)
