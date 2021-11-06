@@ -154,8 +154,8 @@ class Ui_Form():
 
 # noinspection PyTypeChecker
 class MyWidget(QWidget, Ui_Form):
-    def __init__(self, a, b, c):
-        super().__init__(a, b, c)
+    def __init__(self, prop, col, paint):
+        super().__init__(prop, col, paint)
         self.setupUi(self)
 
 
