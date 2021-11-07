@@ -59,7 +59,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.color_button.clicked.connect(self.run)
         self.ok_button.clicked.connect(self.run_1)
         self.col = ''
-        self.do_paint = False
 
     def is_number(self, b):
         try:
@@ -84,11 +83,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self.lineEdit.text() and self.col != '':
                 if (float(self.lineEdit.text()) >= 1.0) and (float(self.lineEdit.text()) <= 2.0):
                     self.znach = float(self.lineEdit.text())
-                    print(self.znach)
-                    self.form = Ui_Form(self.znach, self.col, self.do_paint)
-                    self.wid = MyWidget(self.znach, self.col, self.do_paint)
+                    self.wid = MyWidget(self.znach, self.col)
                     self.wid.show()
-                    self.do_paint = True
                     self.hide()
                 else:
                     MainWindow().error_1('Некоректное значение')
@@ -99,14 +95,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
 class Ui_Form():
-    def __init__(self, prop, col, paint):
-        self.paint = paint
+
+    def setupUi_1(self, Form, prop, col):
         self.prop = prop
         self.col = col
-
-    def setupUi_1(self, Form):
         Form.setObjectName("Form")
-        Form.resize(400 * self.prop, 350)
+        Form.resize(round(350 * prop), 350)
         self.pushButton = QtWidgets.QPushButton(Form)
         self.pushButton.setGeometry(QtCore.QRect(10, 10, 111, 31))
         self.pushButton.setObjectName("pushButton")
@@ -140,23 +134,21 @@ class Ui_Form():
         self.pushButton_5.setText(_translate("Form", "Сохранить изображение"))
 
     def paintEvent(self, event):
-        if self.paint:
             qp = QPainter()
             qp.begin(self)
             self.draw_flag(qp)
             qp.end()
 
     def draw_flag(self, qp):
-        qp.setPen(QColor(255, 0, 0))
-        qp.setBrush(QColor(255, 0, 0))
-        qp.drawRect(130, 10, 230, 110)
+        qp.setPen(self.col)
+        qp.setBrush(self.col)
+        qp.drawRect(130, 10, round(200 * self.prop), 200)
 
 
-# noinspection PyTypeChecker
-class MyWidget(QWidget, Ui_Form):
-    def __init__(self, prop, col, paint):
-        super().__init__(prop, col, paint)
-        self.setupUi(self)
+class MyWidget(Ui_Form, QWidget):
+    def __init__(self, prop, col):
+        super().__init__()
+        self.setupUi_1(self, prop, col)
 
 
 def except_hook(cls, exception, traceback):
