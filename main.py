@@ -74,7 +74,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         msg.setWindowTitle('Ошибка')
         msg.exec_()
 
-
     def color_button_push(self):
         self.col = QColorDialog.getColor()
 
@@ -116,7 +115,7 @@ class Flag_Form():
         self.save_btn = QtWidgets.QPushButton(Form)
         self.save_btn.setGeometry(QtCore.QRect(10, 260, 141, 51))
         self.save_btn.setStyleSheet("font: 75 8pt \"MS Shell Dlg 2\";\n"
-                                        "")
+                                    "")
         self.save_btn.setObjectName("pushButton_5")
 
         self.retranslateUi_flg(Form)
@@ -127,17 +126,17 @@ class Flag_Form():
         Form.setWindowTitle(_translate("Form", "Form"))
         self.string_btn.setText(_translate("Form", "Нарисовать полосу"))
         self.strings_btn.setText(_translate("Form", "Нарисовать череду\n"
-                                                     "полос"))
+                                                    "полос"))
         self.forms_btn.setText(_translate("Form", "Нарисовать особую\n"
-                                                     "форму"))
+                                                  "форму"))
         self.arms_btn.setText(_translate("Form", "Вставить герб"))
         self.save_btn.setText(_translate("Form", "Сохранить изображение"))
 
     def paintEvent(self, event):
-            qp = QPainter()
-            qp.begin(self)
-            self.draw_flag(qp)
-            qp.end()
+        qp = QPainter()
+        qp.begin(self)
+        self.draw_flag(qp)
+        qp.end()
 
     def draw_flag(self, qp):
         qp.setPen(self.col)
@@ -206,9 +205,9 @@ class String_Form(object):
         self.col_btn = QtWidgets.QPushButton(Form)
         self.col_btn.setGeometry(QtCore.QRect(14, 70, 81, 23))
         self.col_btn.setObjectName("col_btn")
-        self.show_btn = QtWidgets.QPushButton(Form)
-        self.show_btn.setGeometry(QtCore.QRect(100, 100, 91, 31))
-        self.show_btn.setObjectName("show_btn")
+        self.drow_btn = QtWidgets.QPushButton(Form)
+        self.drow_btn.setGeometry(QtCore.QRect(100, 100, 91, 31))
+        self.drow_btn.setObjectName("drow_btn")
 
         self.retranslateUi_str(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -235,7 +234,7 @@ class String_Form(object):
         self.ok_btn.setText(_translate("Form", "Принять"))
         self.label_4.setText(_translate("Form", "Цвет полосы"))
         self.col_btn.setText(_translate("Form", "Выбрать"))
-        self.show_btn.setText(_translate("Form", "Показать"))
+        self.drow_btn.setText(_translate("Form", "Нарисовать"))
 
 
 class StringWidget(String_Form, QWidget):
@@ -244,11 +243,21 @@ class StringWidget(String_Form, QWidget):
         self.setupUi_str(self)
         # if (self.comboBox_2.currentText() != '') and (self.comboBox_3.currentText() != ''):
         #     if int(self.comboBox_2.currentText()) < int(self.comboBox_3.currentText()):
-                # MainWindow().error_1('Номер позиции не должен превышать размера полосы')
+        # MainWindow().error_1('Номер позиции не должен превышать размера полосы')
         self.col_btn.clicked.connect(self.col_btn_push)
+        self.drow_btn.clicked.connect(self.drow_btn_push)
+        self.col_str = ''
 
     def col_btn_push(self):
-        self.col_btn = QColorDialog.getColor()
+        self.col_str = QColorDialog.getColor()
+
+    def drow_btn_push(self):
+        if (self.comboBox.currentText() != '') and (self.comboBox_2.currentText() != '') and (
+                self.comboBox_3.currentText() != '') and self.col_str != '':
+            if int(self.comboBox_2.currentText()) >= int(self.comboBox_3.currentText()):
+                if self.comboBox.currentText() == 'Горизонтальная':
+                    pass
+
 
 def except_hook(cls, exception, traceback):
     sys.__excepthook__(cls, exception, traceback)
