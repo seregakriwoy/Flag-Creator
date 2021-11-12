@@ -4,7 +4,7 @@ import PyQt5
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtWidgets import QApplication, QMainWindow, QColorDialog, QMessageBox, QWidget
-from PyQt5 import QtCore, QtGui, QtWidgets, sip
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
@@ -121,8 +121,8 @@ class Flag_Form():
 
         self.retranslateUi_flg(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
-        self.do_paint_gor = False
-        self.do_paint_ver = False
+        # self.do_paint_gor = False
+        # self.do_paint_ver = False
 
     def retranslateUi_flg(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -147,18 +147,17 @@ class Flag_Form():
         qp.drawRect(130, 10, round(200 * self.prop), 200)
         self.dlin = round(200 * self.prop)
 
-    def paintEvent_gor(self, do, si, poz, clr, event=''):
-        self.do_paint_gor = do
-        if self.do_paint_gor:
-            qp = QPainter()
-            qp.begin(self)
-            self.draw_string_gor(qp, si, poz, clr)
-            qp.end()
+    def paintEvent_gor(self, si, poz, clr, event):
+        qp = QPainter()
+        qp.begin(self)
+        self.draw_string_gor(si, poz, clr, qp)
+        qp.end()
 
-    def draw_string_gor(self, qp, si, poz, clr):
+    def draw_string_gor(self, si, poz, clr, qp):
         self.color = clr
         self.poz = poz
         self.si = si
+        qp = Flag_Form.paintEvent_gor.qp
         qp.setPen(self.color)
         qp.setBrush(self.color)
         qp.drawRect(130, round(10 + 200 / self.si * (self.poz - 1)), self.dlin, round(200 / self.si))
@@ -170,7 +169,8 @@ class FlagWidget(Flag_Form, QWidget):
         self.setupUi_flg(self, prop, col)
         self.stri = StringWidget()
         self.string_btn.clicked.connect(self.string_btn_push)
-        self.stri.send_data[bool, int, int, PyQt5.QtGui.QColor].connect(self.paintEvent_gor)
+        self.stri.send_data[int, int, QColor, QPainter].connect(
+            self.draw_string_gor)
 
     def string_btn_push(self):
         self.stri.show()
@@ -259,7 +259,7 @@ class String_Form(object):
 
 
 class StringWidget(String_Form, QWidget):
-    send_data = pyqtSignal(bool, int, int, PyQt5.QtGui.QColor)
+    send_data = pyqtSignal(int, int, PyQt5.QtGui.QColor, QPainter)
 
     def __init__(self):
         super().__init__()
@@ -273,17 +273,18 @@ class StringWidget(String_Form, QWidget):
 
     def col_btn_push(self):
         self.col_str = QColorDialog.getColor()
-        print(type(self.col_str.rgb()))
 
     def drow_btn_push(self):
         if (self.comboBox.currentText() != '') and (self.comboBox_2.currentText() != '') and (
                 self.comboBox_3.currentText() != '') and self.col_str != '':
             if int(self.comboBox_2.currentText()) >= int(self.comboBox_3.currentText()):
                 if self.comboBox.currentText() == 'Горизонтальная':
-                    self.do_paint_gor = True
+                    # self.do_paint_gor = True
+                    self.qp = QPainter()
+                    print(type(self.qp))
                     self.size = int(self.comboBox_2.currentText())
                     self.pozition = int(self.comboBox_3.currentText())
-                    self.send_data.emit(self.do_paint_gor, self.size, self.pozition, self.col_str)
+                    self.send_data.emit(self.size, self.pozition, self.col_str, self.qp)
 
 
 def except_hook(cls, exception, traceback):
