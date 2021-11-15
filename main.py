@@ -94,7 +94,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             MainWindow().error_1('Необходимо записать число')
 
 
-class Flag_Form():
+class Flag_Form(QWidget):
+    def __init__(self):
+        super().__init__()
 
     def setupUi_flg(self, Form, prop, col):
         self.prop = prop
@@ -136,29 +138,39 @@ class Flag_Form():
         self.arms_btn.setText(_translate("Form", "Вставить герб"))
         self.save_btn.setText(_translate("Form", "Сохранить изображение"))
 
-    def paintEvent(self, event):
+    def paintEvent(self, event, si=0, poz=0, clr='', dl='', schet=0):
+        si = 2
+        poz = 1
+        dl = 200
         qp = QPainter()
         qp.begin(self)
-        self.draw_flag(qp)
+        if schet == 0:
+            self.draw_flag(qp)
+        elif schet == 1:
+            Flag_Form.draw_string_gor(self, si, poz, clr, dl, qp)
+            print(3)
         qp.end()
+        self.update()
 
     def draw_flag(self, qp):
         qp.setPen(self.col)
         qp.setBrush(self.col)
         qp.drawRect(130, 10, round(200 * self.prop), 200)
+        self.dlin = round(200 * self.prop)
 
-    def paintEvent_gor(self, si, poz, clr, dl, event):
-        qp = QPainter()
-        qp.begin(self)
-        Flag_Form.draw_string_gor(self, si, poz, clr, dl, qp)
-        qp.end()
-        update()
+    # def paintEvent_gor(self, si, poz, clr, dl, event):
+    #     qp = QPainter()
+    #     qp.begin(self)
+    #     Flag_Form.draw_string_gor(self, si, poz, clr, dl, qp)
+    #     qp.end()
+    #     self.update()
 
     def draw_string_gor(self, si, poz, clr, dl, qp):
-        qp.setPen(clr)
-        qp.setBrush(clr)
-        self.fl = Flag_Form()
-        qp.drawRect(130, round(10 + 200 / si * (poz - 1)), dl, round(200 / si))
+         qp.setPen(clr)
+         qp.setBrush(clr)
+         qp.drawRect(500, 500, dl, round(200 / si))
+         print(1)
+         self.update()
 
     class String_Form(object):
         def setupUi_str(self, Form, dlin):
@@ -268,8 +280,9 @@ class Flag_Form():
                         self.pozition = int(self.comboBox_3.currentText())
                         # self.send_data.emit(self.size, self.pozition, self.col_str, self.qp)
                         event = True
-                        Flag_Form.paintEvent_gor(self, self.size, self.pozition, self.col_str,
-                                                 self.dl, event)
+                        sch = 1
+                        Flag_Form.paintEvent(self, event, self.size, self.pozition, self.col_str,
+                                             self.dl, sch)
 
 
 class FlagWidget(Flag_Form, QWidget):
