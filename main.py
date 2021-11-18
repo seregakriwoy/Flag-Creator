@@ -1,11 +1,16 @@
 import sys
 
-import PyQt5
-from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPainter, QColor, QPixmap
 from PyQt5.QtWidgets import QApplication, QMainWindow, QColorDialog, QMessageBox, QWidget, \
-    QFileDialog
+     QLabel
 from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+
+if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
+    QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 
 class Ui_MainWindow(object):
@@ -157,6 +162,14 @@ class Flag_Form(QWidget):
         self.label_5 = QtWidgets.QLabel(Flag)
         self.label_5.setGeometry(QtCore.QRect(10, 300, 271, 41))
         self.label_5.setObjectName("label_5")
+        # self.label_6.setGeometry(QtCore.QRect(310, 270, 61, 61))
+        # self.label_6.setText("")
+        # self.label_6.setObjectName("label_6")
+        self.image = QLabel(self)
+        self.image.move(280, 270)
+        self.image.resize(61, 61)
+        self.pixmap = QPixmap('image.png')
+        self.image.setPixmap(self.pixmap)
 
         self.retranslateUi_flg(Flag)
         QtCore.QMetaObject.connectSlotsByName(Flag)
