@@ -2,8 +2,9 @@ import sys
 
 import PyQt5
 from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QPainter, QColor
-from PyQt5.QtWidgets import QApplication, QMainWindow, QColorDialog, QMessageBox, QWidget
+from PyQt5.QtGui import QPainter, QColor, QPixmap
+from PyQt5.QtWidgets import QApplication, QMainWindow, QColorDialog, QMessageBox, QWidget, \
+    QFileDialog
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -87,11 +88,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.wid.show()
                     self.hide()
                 else:
-                    MainWindow().error_1('Некоректное значение')
+                    MainWindow().error_1('Некоректное значение!')
             else:
-                MainWindow().error_1('Не оставляйте пустые поля')
+                MainWindow().error_1('Не оставляйте пустые поля!')
         else:
-            MainWindow().error_1('Необходимо записать число')
+            MainWindow().error_1('Необходимо записать число!')
 
 
 class Flag_Form(QWidget):
@@ -102,11 +103,11 @@ class Flag_Form(QWidget):
         self.dlin = round(200 * self.prop)
         Flag.setObjectName("Form")
         Flag.resize(round(350 * prop), 350)
-        self.save_btn = QtWidgets.QPushButton(Flag)
-        self.save_btn.setGeometry(QtCore.QRect(190, 250, 141, 51))
-        self.save_btn.setStyleSheet("font: 75 8pt \"MS Shell Dlg 2\";\n"
-                                    "")
-        self.save_btn.setObjectName("save_btn")
+        # self.save_btn = QtWidgets.QPushButton(Flag)
+        # self.save_btn.setGeometry(QtCore.QRect(190, 250, 141, 51))
+        # self.save_btn.setStyleSheet("font: 75 8pt \"MS Shell Dlg 2\";\n"
+        #                             "")
+        # self.save_btn.setObjectName("save_btn")
         self.orientation_comboBox = QtWidgets.QComboBox(Flag)
         self.orientation_comboBox.setGeometry(QtCore.QRect(10, 30, 111, 21))
         self.orientation_comboBox.setObjectName("orientation_comboBox")
@@ -153,6 +154,9 @@ class Flag_Form(QWidget):
         self.drow_btn = QtWidgets.QPushButton(Flag)
         self.drow_btn.setGeometry(QtCore.QRect(10, 250, 111, 41))
         self.drow_btn.setObjectName("ok_btn")
+        self.label_5 = QtWidgets.QLabel(Flag)
+        self.label_5.setGeometry(QtCore.QRect(10, 300, 271, 41))
+        self.label_5.setObjectName("label_5")
 
         self.retranslateUi_flg(Flag)
         QtCore.QMetaObject.connectSlotsByName(Flag)
@@ -160,7 +164,7 @@ class Flag_Form(QWidget):
     def retranslateUi_flg(self, Flag):
         _translate = QtCore.QCoreApplication.translate
         Flag.setWindowTitle(_translate("Flag", "Form"))
-        self.save_btn.setText(_translate("Flag", "Сохранить изображение"))
+        # self.save_btn.setText(_translate("Flag", "Сохранить изображение"))
         self.orientation_comboBox.setItemText(1, _translate("Flag", "Горизонтальная"))
         self.orientation_comboBox.setItemText(2, _translate("Flag", "Вертикальная"))
         self.label.setText(_translate("Flag", "Ориентация полосы"))
@@ -180,24 +184,10 @@ class Flag_Form(QWidget):
         self.label_4.setText(_translate("Flag", "Цвет полосы"))
         self.col_btn.setText(_translate("Flag", "Выбрать"))
         self.drow_btn.setText(_translate("Flag", "Нарисовать"))
-    # def paintEvent(self, event):
-    #     self.qp = QPainter()
-    #     self.qp.begin(self)
-    #     self.draw_flag(self.qp)
-    #     self.qp.end()
-    #
-    # def draw_flag(self, qp):
-    #     qp.setPen(self.col)
-    #     qp.setBrush(self.col)
-    #     qp.drawRect(130, 10, round(200 * self.prop), 200)
-    #     self.dlin = round(200 * self.prop)
-    #
-    # def draw_string_gor(self, si, poz, clr, dl, qp):
-    #     qp.setPen(clr)
-    #     qp.setBrush(clr)
-    #     qp.drawRect(130, round(10 + 200 / si * (poz - 1)), dl, round(200 / si))
-    #     print(1)
-    #     self.update()
+        self.label_5.setText(_translate("Flag",
+                                        "<html><head/><body><p>При добавлении второй и более полос "
+                                        "постройте </p><p>сначала её со старым цветом, "
+                                        "а потом его измените</p></body></html>"))
 
 
 class FlagWidget(Flag_Form, QWidget):
@@ -206,6 +196,7 @@ class FlagWidget(Flag_Form, QWidget):
         self.setupUi_flg(self, prop, col)
         self.col_btn.clicked.connect(self.col_btn_push)
         self.drow_btn.clicked.connect(self.drow_btn_push)
+        # self.save_btn.clicked.connect(self.save_image)
         self.col_str = ''
         self.size = 0
         self.pozition = 0
@@ -225,11 +216,9 @@ class FlagWidget(Flag_Form, QWidget):
         if self.do_gor:
             self.draw_string_gor(self.size, self.pozition, self.col_str, self.dlin, self.qp)
             self.update()
-            #a = self.qp.save()
         elif self.do_ver:
             self.draw_string_ver(self.size, self.pozition, self.col_str, self.dlin, self.qp)
             self.update()
-            #a = self.qp.save()
         self.qp.end()
 
     def draw_flag(self, qp):
@@ -278,6 +267,10 @@ class FlagWidget(Flag_Form, QWidget):
                 elif self.orientation == 'Вертикальная':
                     self.do_gor = False
                     self.do_ver = True
+            else:
+                MainWindow.error_1(self, 'Номер позиции не может превышать размер!')
+        else:
+            MainWindow.error_1(self, 'Не оставляйте пустые поля!')
 
 
 def except_hook(cls, exception, traceback):
