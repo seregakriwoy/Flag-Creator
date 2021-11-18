@@ -212,6 +212,7 @@ class FlagWidget(Flag_Form, QWidget):
         self.pozition = 0
         self.orientation = ''
         self.do_gor = False
+        self.lst = []
 
     def paintEvent(self, event):
         s = 0
@@ -223,6 +224,7 @@ class FlagWidget(Flag_Form, QWidget):
         if self.do_gor:
             self.draw_string_gor(self.size, self.pozition, self.col_str, self.dlin, self.qp)
             self.update()
+            a = self.qp.save()
         self.qp.end()
 
     def draw_flag(self, qp):
@@ -235,7 +237,12 @@ class FlagWidget(Flag_Form, QWidget):
         qp.setPen(clr)
         qp.setBrush(clr)
         qp.drawRect(130, round(10 + 200 / si * (poz - 1)), dl, round(200 / si))
-        print(1)
+        self.lst.append([clr, 130, round(10 + 200 / si * (poz - 1)), dl, round(200 / si)])
+        for i in self.lst:
+            qp.setPen(i[0])
+            qp.setBrush(i[0])
+            qp.drawRect(i[1], i[2], i[3], i[4])
+        #print(1)
 
     def col_btn_push(self):
         self.col_str = QColorDialog.getColor()
