@@ -180,7 +180,6 @@ class Flag_Form(QWidget):
         self.label_4.setText(_translate("Flag", "Цвет полосы"))
         self.col_btn.setText(_translate("Flag", "Выбрать"))
         self.drow_btn.setText(_translate("Flag", "Нарисовать"))
-
     # def paintEvent(self, event):
     #     self.qp = QPainter()
     #     self.qp.begin(self)
@@ -212,7 +211,9 @@ class FlagWidget(Flag_Form, QWidget):
         self.pozition = 0
         self.orientation = ''
         self.do_gor = False
+        self.do_ver = False
         self.lst = []
+        self.col_lst = []
 
     def paintEvent(self, event):
         s = 0
@@ -224,7 +225,11 @@ class FlagWidget(Flag_Form, QWidget):
         if self.do_gor:
             self.draw_string_gor(self.size, self.pozition, self.col_str, self.dlin, self.qp)
             self.update()
-            a = self.qp.save()
+            #a = self.qp.save()
+        elif self.do_ver:
+            self.draw_string_ver(self.size, self.pozition, self.col_str, self.dlin, self.qp)
+            self.update()
+            #a = self.qp.save()
         self.qp.end()
 
     def draw_flag(self, qp):
@@ -242,7 +247,19 @@ class FlagWidget(Flag_Form, QWidget):
             qp.setPen(i[0])
             qp.setBrush(i[0])
             qp.drawRect(i[1], i[2], i[3], i[4])
-        #print(1)
+            self.col_lst.append([qp.setPen(i[0]), qp.setBrush(i[0])])
+        # print(1)
+
+    def draw_string_ver(self, si, poz, clr, dl, qp):
+        qp.setPen(clr)
+        qp.setBrush(clr)
+        qp.drawRect(round(130 + dl / si * (poz - 1)), 10, round(dl / si), 200)
+        self.lst.append([clr, round(130 + dl / si * (poz - 1)), 10, round(dl / si), 200])
+        for i in self.lst:
+            qp.setPen(i[0])
+            qp.setBrush(i[0])
+            qp.drawRect(i[1], i[2], i[3], i[4])
+            self.col_lst.append([qp.setPen(i[0]), qp.setBrush(i[0])])
 
     def col_btn_push(self):
         self.col_str = QColorDialog.getColor()
@@ -255,7 +272,12 @@ class FlagWidget(Flag_Form, QWidget):
                 self.size = int(self.size_comboBox.currentText())
                 self.pozition = int(self.poz_comboBox.currentText())
                 self.orientation = self.orientation_comboBox.currentText()
-                self.do_gor = True
+                if self.orientation == 'Горизонтальная':
+                    self.do_ver = False
+                    self.do_gor = True
+                elif self.orientation == 'Вертикальная':
+                    self.do_gor = False
+                    self.do_ver = True
 
 
 def except_hook(cls, exception, traceback):
