@@ -95,62 +95,135 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
 class Flag_Form(QWidget):
-    def __init__(self):
-        super().__init__()
 
-    def setupUi_flg(self, Form, prop, col):
+    def setupUi_flg(self, Flag, prop, col):
         self.prop = prop
         self.col = col
         self.dlin = round(200 * self.prop)
-        Form.setObjectName("Form")
-        Form.resize(round(350 * prop), 350)
-        self.string_btn = QtWidgets.QPushButton(Form)
-        self.string_btn.setGeometry(QtCore.QRect(10, 10, 111, 31))
-        self.string_btn.setObjectName("pushButton")
-        self.strings_btn = QtWidgets.QPushButton(Form)
-        self.strings_btn.setGeometry(QtCore.QRect(10, 50, 111, 31))
-        self.strings_btn.setObjectName("pushButton_2")
-        self.forms_btn = QtWidgets.QPushButton(Form)
-        self.forms_btn.setGeometry(QtCore.QRect(10, 90, 111, 41))
-        self.forms_btn.setObjectName("pushButton_3")
-        self.arms_btn = QtWidgets.QPushButton(Form)
-        self.arms_btn.setGeometry(QtCore.QRect(10, 140, 111, 31))
-        self.arms_btn.setObjectName("pushButton_4")
-        self.save_btn = QtWidgets.QPushButton(Form)
-        self.save_btn.setGeometry(QtCore.QRect(10, 260, 141, 51))
+        Flag.setObjectName("Form")
+        Flag.resize(round(350 * prop), 350)
+        self.save_btn = QtWidgets.QPushButton(Flag)
+        self.save_btn.setGeometry(QtCore.QRect(190, 250, 141, 51))
         self.save_btn.setStyleSheet("font: 75 8pt \"MS Shell Dlg 2\";\n"
                                     "")
-        self.save_btn.setObjectName("pushButton_5")
+        self.save_btn.setObjectName("save_btn")
+        self.orientation_comboBox = QtWidgets.QComboBox(Flag)
+        self.orientation_comboBox.setGeometry(QtCore.QRect(10, 30, 111, 21))
+        self.orientation_comboBox.setObjectName("orientation_comboBox")
+        self.orientation_comboBox.addItem("")
+        self.orientation_comboBox.setItemText(0, "")
+        self.orientation_comboBox.addItem("")
+        self.orientation_comboBox.addItem("")
+        self.label = QtWidgets.QLabel(Flag)
+        self.label.setGeometry(QtCore.QRect(10, 10, 111, 16))
+        self.label.setObjectName("label")
+        self.label_2 = QtWidgets.QLabel(Flag)
+        self.label_2.setGeometry(QtCore.QRect(10, 60, 81, 16))
+        self.label_2.setObjectName("label_2")
+        self.size_comboBox = QtWidgets.QComboBox(Flag)
+        self.size_comboBox.setGeometry(QtCore.QRect(10, 80, 71, 21))
+        self.size_comboBox.setObjectName("size_comboBox")
+        self.size_comboBox.addItem("")
+        self.size_comboBox.setItemText(0, "")
+        self.size_comboBox.addItem("")
+        self.size_comboBox.addItem("")
+        self.size_comboBox.addItem("")
+        self.size_comboBox.addItem("")
+        self.size_comboBox.addItem("")
+        self.label_3 = QtWidgets.QLabel(Flag)
+        self.label_3.setGeometry(QtCore.QRect(10, 110, 91, 16))
+        self.label_3.setObjectName("label_3")
+        self.poz_comboBox = QtWidgets.QComboBox(Flag)
+        self.poz_comboBox.setGeometry(QtCore.QRect(10, 130, 69, 22))
+        self.poz_comboBox.setObjectName("poz_comboBox")
+        self.poz_comboBox.addItem("")
+        self.poz_comboBox.setItemText(0, "")
+        self.poz_comboBox.addItem("")
+        self.poz_comboBox.addItem("")
+        self.poz_comboBox.addItem("")
+        self.poz_comboBox.addItem("")
+        self.poz_comboBox.addItem("")
+        self.poz_comboBox.addItem("")
+        self.label_4 = QtWidgets.QLabel(Flag)
+        self.label_4.setGeometry(QtCore.QRect(10, 160, 71, 16))
+        self.label_4.setObjectName("label_4")
+        self.col_btn = QtWidgets.QPushButton(Flag)
+        self.col_btn.setGeometry(QtCore.QRect(10, 180, 81, 23))
+        self.col_btn.setObjectName("col_btn")
+        self.drow_btn = QtWidgets.QPushButton(Flag)
+        self.drow_btn.setGeometry(QtCore.QRect(10, 250, 111, 41))
+        self.drow_btn.setObjectName("ok_btn")
 
-        self.retranslateUi_flg(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
-        # self.do_paint_gor = False
-        # self.do_paint_ver = False
+        self.retranslateUi_flg(Flag)
+        QtCore.QMetaObject.connectSlotsByName(Flag)
 
-    def retranslateUi_flg(self, Form):
+    def retranslateUi_flg(self, Flag):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
-        self.string_btn.setText(_translate("Form", "Нарисовать полосу"))
-        self.strings_btn.setText(_translate("Form", "Нарисовать череду\n"
-                                                    "полос"))
-        self.forms_btn.setText(_translate("Form", "Нарисовать особую\n"
-                                                  "форму"))
-        self.arms_btn.setText(_translate("Form", "Вставить герб"))
-        self.save_btn.setText(_translate("Form", "Сохранить изображение"))
+        Flag.setWindowTitle(_translate("Flag", "Form"))
+        self.save_btn.setText(_translate("Flag", "Сохранить изображение"))
+        self.orientation_comboBox.setItemText(1, _translate("Flag", "Горизонтальная"))
+        self.orientation_comboBox.setItemText(2, _translate("Flag", "Вертикальная"))
+        self.label.setText(_translate("Flag", "Ориентация полосы"))
+        self.label_2.setText(_translate("Flag", "Размер полосы"))
+        self.size_comboBox.setItemText(1, _translate("Flag", "2"))
+        self.size_comboBox.setItemText(2, _translate("Flag", "3"))
+        self.size_comboBox.setItemText(3, _translate("Flag", "4"))
+        self.size_comboBox.setItemText(4, _translate("Flag", "5"))
+        self.size_comboBox.setItemText(5, _translate("Flag", "6"))
+        self.label_3.setText(_translate("Flag", "Позиция полосы"))
+        self.poz_comboBox.setItemText(1, _translate("Flag", "1"))
+        self.poz_comboBox.setItemText(2, _translate("Flag", "2"))
+        self.poz_comboBox.setItemText(3, _translate("Flag", "3"))
+        self.poz_comboBox.setItemText(4, _translate("Flag", "4"))
+        self.poz_comboBox.setItemText(5, _translate("Flag", "5"))
+        self.poz_comboBox.setItemText(6, _translate("Flag", "6"))
+        self.label_4.setText(_translate("Flag", "Цвет полосы"))
+        self.col_btn.setText(_translate("Flag", "Выбрать"))
+        self.drow_btn.setText(_translate("Flag", "Нарисовать"))
 
-    def paintEvent(self, event, si=0, poz=0, clr='', dl='', schet=0):
-        si = 2
-        poz = 1
-        dl = 200
-        qp = QPainter()
-        qp.begin(self)
-        if schet == 0:
-            self.draw_flag(qp)
-        elif schet == 1:
-            Flag_Form.draw_string_gor(self, si, poz, clr, dl, qp)
-            print(3)
-        qp.end()
-        self.update()
+    # def paintEvent(self, event):
+    #     self.qp = QPainter()
+    #     self.qp.begin(self)
+    #     self.draw_flag(self.qp)
+    #     self.qp.end()
+    #
+    # def draw_flag(self, qp):
+    #     qp.setPen(self.col)
+    #     qp.setBrush(self.col)
+    #     qp.drawRect(130, 10, round(200 * self.prop), 200)
+    #     self.dlin = round(200 * self.prop)
+    #
+    # def draw_string_gor(self, si, poz, clr, dl, qp):
+    #     qp.setPen(clr)
+    #     qp.setBrush(clr)
+    #     qp.drawRect(130, round(10 + 200 / si * (poz - 1)), dl, round(200 / si))
+    #     print(1)
+    #     self.update()
+
+
+class FlagWidget(Flag_Form, QWidget):
+    def __init__(self, prop, col):
+        super().__init__()
+        self.setupUi_flg(self, prop, col)
+        self.col_btn.clicked.connect(self.col_btn_push)
+        self.drow_btn.clicked.connect(self.drow_btn_push)
+        self.col_str = ''
+        self.size = 0
+        self.pozition = 0
+        self.orientation = ''
+        self.do_gor = False
+
+    def paintEvent(self, event):
+        s = 0
+        self.qp = QPainter()
+        self.qp.begin(self)
+        if s == 0:
+            self.draw_flag(self.qp)
+            s += 1
+        if self.do_gor:
+            self.draw_string_gor(self.size, self.pozition, self.col_str, self.dlin, self.qp)
+            self.update()
+        self.qp.end()
 
     def draw_flag(self, qp):
         qp.setPen(self.col)
@@ -158,144 +231,24 @@ class Flag_Form(QWidget):
         qp.drawRect(130, 10, round(200 * self.prop), 200)
         self.dlin = round(200 * self.prop)
 
-    # def paintEvent_gor(self, si, poz, clr, dl, event):
-    #     qp = QPainter()
-    #     qp.begin(self)
-    #     Flag_Form.draw_string_gor(self, si, poz, clr, dl, qp)
-    #     qp.end()
-    #     self.update()
-
     def draw_string_gor(self, si, poz, clr, dl, qp):
-         qp.setPen(clr)
-         qp.setBrush(clr)
-         qp.drawRect(500, 500, dl, round(200 / si))
-         print(1)
-         self.update()
+        qp.setPen(clr)
+        qp.setBrush(clr)
+        qp.drawRect(130, round(10 + 200 / si * (poz - 1)), dl, round(200 / si))
+        print(1)
 
-    class String_Form(object):
-        def setupUi_str(self, Form, dlin):
-            self.dl = dlin
-            Form.setObjectName("Form")
-            Form.resize(318, 151)
-            self.comboBox = QtWidgets.QComboBox(Form)
-            self.comboBox.setGeometry(QtCore.QRect(10, 20, 111, 21))
-            self.comboBox.setObjectName("comboBox")
-            self.comboBox.addItem("")
-            self.comboBox.setItemText(0, "")
-            self.comboBox.addItem("")
-            self.comboBox.addItem("")
-            self.label = QtWidgets.QLabel(Form)
-            self.label.setGeometry(QtCore.QRect(10, 0, 111, 16))
-            self.label.setObjectName("label")
-            self.label_2 = QtWidgets.QLabel(Form)
-            self.label_2.setGeometry(QtCore.QRect(140, 0, 81, 16))
-            self.label_2.setObjectName("label_2")
-            self.comboBox_2 = QtWidgets.QComboBox(Form)
-            self.comboBox_2.setGeometry(QtCore.QRect(140, 20, 71, 21))
-            self.comboBox_2.setObjectName("comboBox_2")
-            self.comboBox_2.addItem("")
-            self.comboBox_2.setItemText(0, "")
-            self.comboBox_2.addItem("")
-            self.comboBox_2.addItem("")
-            self.comboBox_2.addItem("")
-            self.comboBox_2.addItem("")
-            self.comboBox_2.addItem("")
-            self.label_3 = QtWidgets.QLabel(Form)
-            self.label_3.setGeometry(QtCore.QRect(230, 0, 91, 16))
-            self.label_3.setObjectName("label_3")
-            self.comboBox_3 = QtWidgets.QComboBox(Form)
-            self.comboBox_3.setGeometry(QtCore.QRect(230, 20, 69, 22))
-            self.comboBox_3.setObjectName("comboBox_3")
-            self.comboBox_3.addItem("")
-            self.comboBox_3.setItemText(0, "")
-            self.comboBox_3.addItem("")
-            self.comboBox_3.addItem("")
-            self.comboBox_3.addItem("")
-            self.comboBox_3.addItem("")
-            self.comboBox_3.addItem("")
-            self.comboBox_3.addItem("")
-            self.ok_btn = QtWidgets.QPushButton(Form)
-            self.ok_btn.setGeometry(QtCore.QRect(200, 100, 111, 41))
-            self.ok_btn.setObjectName("ok_btn")
-            self.label_4 = QtWidgets.QLabel(Form)
-            self.label_4.setGeometry(QtCore.QRect(20, 50, 71, 16))
-            self.label_4.setObjectName("label_4")
-            self.col_btn = QtWidgets.QPushButton(Form)
-            self.col_btn.setGeometry(QtCore.QRect(14, 70, 81, 23))
-            self.col_btn.setObjectName("col_btn")
-            self.drow_btn = QtWidgets.QPushButton(Form)
-            self.drow_btn.setGeometry(QtCore.QRect(100, 100, 91, 31))
-            self.drow_btn.setObjectName("drow_btn")
+    def col_btn_push(self):
+        self.col_str = QColorDialog.getColor()
 
-            self.retranslateUi_str(Form)
-            QtCore.QMetaObject.connectSlotsByName(Form)
-
-        def retranslateUi_str(self, Form):
-            _translate = QtCore.QCoreApplication.translate
-            Form.setWindowTitle(_translate("Form", "Form"))
-            self.comboBox.setItemText(1, _translate("Form", "Горизонтальная"))
-            self.comboBox.setItemText(2, _translate("Form", "Вертикальная"))
-            self.label.setText(_translate("Form", "Ориентация полосы"))
-            self.label_2.setText(_translate("Form", "Размер полосы"))
-            self.comboBox_2.setItemText(1, _translate("Form", "2"))
-            self.comboBox_2.setItemText(2, _translate("Form", "3"))
-            self.comboBox_2.setItemText(3, _translate("Form", "4"))
-            self.comboBox_2.setItemText(4, _translate("Form", "5"))
-            self.comboBox_2.setItemText(5, _translate("Form", "6"))
-            self.label_3.setText(_translate("Form", "Позиция полосы"))
-            self.comboBox_3.setItemText(1, _translate("Form", "1"))
-            self.comboBox_3.setItemText(2, _translate("Form", "2"))
-            self.comboBox_3.setItemText(3, _translate("Form", "3"))
-            self.comboBox_3.setItemText(4, _translate("Form", "4"))
-            self.comboBox_3.setItemText(5, _translate("Form", "5"))
-            self.comboBox_3.setItemText(6, _translate("Form", "6"))
-            self.ok_btn.setText(_translate("Form", "Принять"))
-            self.label_4.setText(_translate("Form", "Цвет полосы"))
-            self.col_btn.setText(_translate("Form", "Выбрать"))
-            self.drow_btn.setText(_translate("Form", "Нарисовать"))
-
-    class StringWidget(String_Form, QWidget):
-        # send_data = pyqtSignal(int, int, PyQt5.QtGui.QColor, QPainter)
-
-        def __init__(self, dl):
-            super().__init__()
-            self.setupUi_str(self, dl)
-            # if (self.comboBox_2.currentText() != '') and (self.comboBox_3.currentText() != ''):
-            #     if int(self.comboBox_2.currentText()) < int(self.comboBox_3.currentText()):
-            # MainWindow().error_1('Номер позиции не должен превышать размера полосы')
-            self.col_btn.clicked.connect(self.col_btn_push)
-            self.drow_btn.clicked.connect(self.drow_btn_push)
-            self.col_str = ''
-
-        def col_btn_push(self):
-            self.col_str = QColorDialog.getColor()
-
-        def drow_btn_push(self):
-            if (self.comboBox.currentText() != '') and (self.comboBox_2.currentText() != '') and (
-                    self.comboBox_3.currentText() != '') and self.col_str != '':
-                if int(self.comboBox_2.currentText()) >= int(self.comboBox_3.currentText()):
-                    if self.comboBox.currentText() == 'Горизонтальная':
-                        # self.do_paint_gor = True
-                        self.size = int(self.comboBox_2.currentText())
-                        self.pozition = int(self.comboBox_3.currentText())
-                        # self.send_data.emit(self.size, self.pozition, self.col_str, self.qp)
-                        event = True
-                        sch = 1
-                        Flag_Form.paintEvent(self, event, self.size, self.pozition, self.col_str,
-                                             self.dl, sch)
-
-
-class FlagWidget(Flag_Form, QWidget):
-    def __init__(self, prop, col):
-        super().__init__()
-        self.setupUi_flg(self, prop, col)
-        self.stri = self.StringWidget(self.dlin)
-        self.string_btn.clicked.connect(self.string_btn_push)
-        # self.stri.send_data[int, int, QColor, QPainter].connect(
-        #     self.draw_string_gor)
-
-    def string_btn_push(self):
-        self.stri.show()
+    def drow_btn_push(self):
+        if (self.orientation_comboBox.currentText() != '') and (
+                self.size_comboBox.currentText() != '') and (
+                self.poz_comboBox.currentText() != '') and self.col_str != '':
+            if int(self.size_comboBox.currentText()) >= int(self.poz_comboBox.currentText()):
+                self.size = int(self.size_comboBox.currentText())
+                self.pozition = int(self.poz_comboBox.currentText())
+                self.orientation = self.orientation_comboBox.currentText()
+                self.do_gor = True
 
 
 def except_hook(cls, exception, traceback):
